@@ -6,7 +6,7 @@ const USER = process.env.SUDO_USER || process.env.USER || process.env.USERNAME;
 const NODE_PATH = process.execPath;
 const si = require('systeminformation');
 const os = require('os');
-const os_info = si.osInfoSync();
+const os_info = await si.osInfo();
 
 if (USER === "root") {
     console.error("Do not run this setup script as ROOT/Administrator. Please use a standard user account with sudo privileges.");
