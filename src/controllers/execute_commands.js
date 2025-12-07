@@ -57,7 +57,7 @@ exports.update_system = (async (req, res) => {
     }
 });
 
-exports.update_system = (async (req, res) => {
+exports.upgrade_system = (async (req, res) => {
     const upgrade = spawn('sudo', ['-n' ,'apt', 'upgrade', '-y'])
     let output = '';
 
