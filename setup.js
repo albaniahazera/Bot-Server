@@ -38,7 +38,7 @@ function execute_install_sh() {
     const script_path = path.join(__dirname, 'install_service.sh');
     const service_path = path.join(__dirname, 'bot_server.service');
 
-    console.log("\nStarting installation... Enter SUDO Password.");
+    console.log("\nStarting installation... You may enter SUDO Password.");
     try {
         execSync(`sudo bash "${script_path}" "${service_path}"`, { stdio: 'inherit' });
         console.log("\nInstallation has been executed");
@@ -52,7 +52,7 @@ function execute_install_sh() {
 function setup() {
     const majorVersion = parseInt(nodejs_version.replace('v', '').split('.')[0]);
 
-    console.log("Running on OS:", os.type(), os.release(), os.platform());
+    console.log("Running on OS:", os.type(), os.release(), os.arch());
     console.log("Checking Node.js version...");
     if (!nodejs_version) {
         console.error("Unable to determine Node.js version.");
