@@ -6,7 +6,7 @@ let serviceConfig = {};
 function load_config() {
     try {
         const data = fs.readFileSync(CONFIG_PATH, 'utf-8');
-        const newconfig = {};
+        const newConfig = {};
         
         data.split('\n').forEach(line => {
             const trimmedLine = line.trim();
@@ -15,11 +15,11 @@ function load_config() {
                 if (part.length >= 2) {
                     const key = part[0].trim();
                     const value = part.slice(1).join(':').trim().toLowerCase();
-                    newconfig[key] = (value === 'true');
+                    newConfig[key] = (value === 'true');
                 }
             }
         });
-        serviceConfig = newconfig;
+        serviceConfig = newConfig;
         console.log('Config loaded successfully:', serviceConfig);
     }catch (error) {
         console.warn('Could not read service configuration file:', error, 'using default settings.');
