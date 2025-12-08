@@ -30,9 +30,9 @@ if sudo systemctl is-enabled "$SERVICE_NAME" >/dev/null 2>&1; then
 
 fi
 
-echo "Configuration sudoers for user: ${APP_USER}..."
-echo "Defaults:${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/bot-server-config > /dev/null
-echo "${APP_USER} ALL=(ALL) NOPASSWD: ${COMMAND}" | sudo tee -a /etc/sudoers.d/bot-server-config > /dev/null
+echo "Configuration sudoers for user: \${APP_USER}..."
+echo "Defaults:\${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/bot-server-config > /dev/null
+echo "\${APP_USER} ALL=(ALL) NOPASSWD: \${COMMAND}" | sudo tee -a /etc/sudoers.d/bot-server-config > /dev/null
 echo "Copy file service to /etc/systemd/system/bot-server.service"
 sudo cp "$SERVICE_FILE_PATH" /etc/systemd/system/bot-server.service
 
