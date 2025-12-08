@@ -9,7 +9,7 @@ const command_routes = require('./src/routes/command')
 const system_routes = require('./src/routes/system')
 const setup = require('./setup.js');
 const os = require('os');
-
+const config_watcher = require('./config/config_watcher');
 
 (async() => {
   if (os.platform() != 'linux') {
@@ -34,5 +34,6 @@ const os = require('os');
 
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
+    config_watcher.start_watcher();
   });
 })();

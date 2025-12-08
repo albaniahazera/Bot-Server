@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../config/config');
 
 function checkServiceEnabled(service_name) {
     return (req, res, next) => {

@@ -42,6 +42,11 @@ function execute_install_sh() {
     const script_path = path.join(__dirname, './scripts/install.sh');
     const service_path = path.join(__dirname, 'bot-server.service');
 
+    if (!fs.existsSync(script_path)) {
+        console.error("Installation script not found at:", script_path, "\nPlease run [npm run gen-ins] to generate it first.");
+        process.exit(1);
+    }
+
     console.log("\nStarting installation... You may need enter SUDO Password.");
     try {
         execSync(`sudo bash "${script_path}" "${service_path}"`, { stdio: 'inherit' });
