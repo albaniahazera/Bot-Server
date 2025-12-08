@@ -29,8 +29,8 @@ const os = require('os');
     res.send('API Running!');
   });
   
-  app.use('/data/command', command_routes);
-  app.use('/data/system', system_routes);
+  app.use('/server/command', command_routes);
+  app.use('/server/system', system_routes);
 
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

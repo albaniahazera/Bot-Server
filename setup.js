@@ -32,7 +32,7 @@ WantedBy=multi-user.target
 
 
 function generate_service_file() {
-    const service_path = path.join(__dirname, 'bot_server.service');
+    const service_path = path.join(__dirname, 'bot-server.service');
     
     fs.writeFileSync(service_path, service_file);
     console.log("Service file created at:", service_path);
@@ -40,7 +40,7 @@ function generate_service_file() {
 
 function execute_install_sh() {
     const script_path = path.join(__dirname, './scripts/install.sh');
-    const service_path = path.join(__dirname, 'bot_server.service');
+    const service_path = path.join(__dirname, 'bot-server.service');
 
     console.log("\nStarting installation... You may need enter SUDO Password.");
     try {
@@ -61,6 +61,7 @@ async function setup() {
     console.log("Checking Node.js version...");
     if (!nodejs_version) {
         console.error("Unable to determine Node.js version.");
+        console.error("Please ensure Node.js is installed.");
         process.exit(1);
     } else if (majorVersion < 20) {
         console.error(`Node.js version ${nodejs_version} is too old. Please use v20 or higher.`);

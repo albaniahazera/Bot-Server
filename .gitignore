@@ -1,12 +1,9 @@
-# Directory Dependence
 node_modules/
 .env
 
-# Log
 npm-debug.log
 npm-debug.log.*
 yarn-error.log
 *.log
 
-# File OS and Editor
 .vscode/
