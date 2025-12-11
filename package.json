@@ -1,6 +1,6 @@
 {
-  "name": "bot-api",
-  "version": "1.5.4",
+  "name": "sysman-api",
+  "version": "1.6.0",
   "scripts": {
     "start": "node server.js",
     "uninstall": "node uninstall.js",
