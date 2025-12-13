@@ -7,7 +7,7 @@ const validate_api_key = (req, res, next) => {
         console.log(`data accessed by visitor with IP: ${visitorIp}`);
         next();
     }else {
-        res.status(403).json({message: 'Forbidden: Invalid API Key'});
+        res.status(401).json({message: 'Forbidden: Invalid API Key'});
     }
 };
 

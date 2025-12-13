@@ -10,6 +10,7 @@ const system_routes = require('./src/routes/system')
 const setup = require('./setup.js');
 const os = require('os');
 const config_watcher = require('./config/config_watcher');
+const path = require('path');
 
 (async() => {
   if (os.platform() != 'linux') {
@@ -28,12 +29,14 @@ const config_watcher = require('./config/config_watcher');
   app.get('/', (req, res) => {
     res.send('API Running!');
   });
-  
+
+  app.use('/doc', express.static(path.join(__dirname, 'documentation')));
   app.use('/server/command', command_routes);
   app.use('/server/system', system_routes);
 
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
+    console.log(`API Docs available at http://localhost:${port}/doc`);
     config_watcher.start_watcher();
   });
 })();

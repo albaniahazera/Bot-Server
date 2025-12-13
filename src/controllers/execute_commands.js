@@ -1,4 +1,4 @@
-const { execSync} = require('child_process');
+const { execSync } = require('child_process');
 
 exports.shutdown_system = (async (req, res) => {
     try {

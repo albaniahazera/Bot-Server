@@ -190,23 +190,3 @@ exports.network_info = (async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve network stats' });
     }
 });
-
-exports.process_info = (async (req, res) => {
-    try {
-        const data = await si.processes();
-        const top_processes = data.list
-        .sort((a, b) => b.cpu - a.cpu)
-        .slice(0, 10);
-
-        res.json(top_processes.map(p => ({
-            pid: p.pid,
-            name: p.name,
-            cpu_percent: p.cpu.toFixed(2),
-            memory_percent: p.mem.toFixed(2),
-            command: p.command
-        })));
-    } catch (error) {
-        console.error('Error retrieving process list:', error.message);
-        res.status(500).json({ error: 'Failed to retrieve process list' });
-    }
-});

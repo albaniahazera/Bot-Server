@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>API Doc</title>
+</head>
+<body>
+    <nav>
+        <h1>API Documentation</h1>
+    </nav>
+    <main>
+        <div class="ctn-content">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#base-url">Base URL</a></li>
+                <li><a href="#api-auth">Authentication</a></li>
+                <li><a href="#res-code">Response Status Codes</a></li>
+                <li><a href="#routes">API Endpoint Reference</a></li>
+                <li><a href="#data-note">Data Model & Technical Notes</a></li>
+                <li><a href="#res-examp">Example Responses</a></li>
+            </ul>
+        </div>
+        <div id="base-url">
+            <h3>Base URL</h3>
+            <div class="ctn-bu">
+                <ul>
+                    <li>http://[ip]:[port]/</li>
+                    <li>http://[ip]:[port]/server/system</li>
+                    <li>http://[ip]:[port]/server/command</li>
+                </ul>
+                <p><span>/</span> : Checks if the API is running (GET method).</p>
+                <p><span>/server/system</span> : Main route for retrieving system information (POST method). Append specific routes like /status, /os, <a href="#system">etc</a>.</p>
+                <p><span>/server/command</span> : Main route for executing server commands (POST method). Append specific commands like /shutdown, /restart, <a href="#command">etc</a>.</p>
+            </div>
+        </div>
+        <div id="api-auth">
+            <h3>Authentication</h3>
+            <div class="ctn-au">
+                <p>This API using authorization api key in header</p>
+                <p>Name : <span>API_KEY</span>. Assign your secret key to this header in every request.</p>
+            </div>
+        </div>
+        <div id="res-code">
+            <h3>Response Status Codes</h3>
+            <div class="ctn-rc">
+                <ul>
+                    <li>200</li>
+                    <li>401</li>
+                    <li>403</li>
+                    <li>404</li>
+                    <li>500</li>
+                </ul>
+                <p><span>200</span> : Successful Request </p>
+                <p><span>401</span> : Unauthorized: Invalid or Missing API Key</p>
+                <p><span>403</span> : Forbidden: Service is disabled in service.conf</p>
+                <p><span>404</span> : Not Found</p>
+                <p><span>500</span> : Internal Server Error</p>
+            </div>
+        </div>
+        <div id="routes">
+            <h3>API Endpoint Reference</h3>
+            <div class="ctn-r">
+                <div id="command">
+                    <h4>Routes Command</h4>
+                    <ul>
+                        <li>/shutdown</li>
+                        <li>/restart</li>
+                        <li>/restart-jellyfin</li>
+                        <li>/status-jellyfin</li>
+                        <li>/restart-nginx</li>
+                        <li>/status-nginx</li>
+                    </ul>
+                    <p>All these routes use the POST method, require the value to be set to True in service.conf, and require correct sudoers and service file configuration.</p>
+                    <p><span>/shutdown</span> : Immediately requests server shutdown.</p>
+                    <p><span>/restart</span> : Immediately request server restart</p>
+                    <p><span>/restart-jellyfin</span> : Request Restart jellyfin service instanly</p>
+                    <p><span>/status-jellyfin</span> : Checks the status of the Jellyfin service (active or inactive).</p>
+                    <p><span>/restart-nginx</span> : Request Restart nginx service instanly</p>
+                    <p><span>/status-nginx</span> : Checks the status of the Nginx service (active or inactive).</p>
+                </div>
+                <div id="system">
+                    <h4>Routes System</h4>
+                    <ul>
+                        <li>/status</li>
+                        <li>/cpu</li>
+                        <li>/memory</li>
+                        <li>/disk</li>
+                        <li>/os</li>
+                        <li>/network</li>
+                    </ul>
+                    <p>All this routes has method POST and need set the value to True in service.conf</p>
+                    <p><span>/status</span> : Request status of system include os, memory, and disk info</p>
+                    <p><span>/cpu</span> : Requests detailed CPU information (brand, cores, and other specifications).</p>
+                    <p><span>/memory</span> : Requests detailed Memory information (size and other specifications)</p>
+                    <p><span>/disk</span> : Requests detailed Disk information (vendor, type, and other specifications)</p>
+                    <p><span>/os</span> : Request detailed os like platform, distro, and other</p>
+                    <p><span>/network</span> : Request data network like interface name, speed transfer, and other</p>
+                </div>
+            </div>
+        </div>
+        <div id="data-note">
+            <h3>Data Model & Technical Notes</h3>
+            <div class="ctn-hn">
+                <div class="si-lib">
+                    <h4>Get Data</h4>
+                    <p>This API uses the <span>systeminformation library and execSync (child_process)</span> for retrieving system data.</p>
+                    <p>Disk and RAM data have been converted to Gigabytes (GB). for data transfer using Mega Byte (MB)</p>
+                </div>
+                <div class="note">
+                    <h4>Note</h4>
+                    <p>In some cases, detailed memory information (e.g., brand/speed) may not be available due to DMI BIOS limitations.</p>
+                </div>
+            </div>
+        </div>
+        <div id="res-examp">
+            <h3>Example Responses</h3>
+            <div class="ctn-re">
+                <p>http://10.159.209.150:3000/server/system/status</p>
+                <div class="res-exam">{
+  "cpu_load": "0.02",
+  "os_distro": "Ubuntu",
+  "memory_usage": {
+    "total": "7.68",
+    "free": "6.44",
+    "used": "1.25"
+  },
+  "disk_usage": [
+    {
+      "fs": "/dev/sda2",
+      "used": "10.94",
+      "free": "446.44",
+      "size": "457.38"
+    }
+  ]
+}
+                </div>
+                <p>http://10.159.209.150:3000/server/command/status-nginx</p>
+                <div class="res-exam">{
+  "nginx_status": "active"
+}
+                </div>
+                <p>http://10.159.209.150:3000/server/system/os</p>
+                <div class="res-exam">{
+  "platform": "linux",
+  "distro": "Ubuntu",
+  "release": "24.04.3 LTS",
+  "kernel": "6.8.0-88-generic",
+  "arch": "x64",
+  "build": "",
+  "code_name": "noble",
+  "code_page": "UTF-8",
+  "fqdn": "ubuntu-server",
+  "host_name": "ubuntu-server",
+  "logo_file": "ubuntu",
+  "serial": "bf74dd623c564cf0ae08949b6c47bada",
+  "service_pack": "",
+  "uefi": false
+}
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+</body>
+</html>

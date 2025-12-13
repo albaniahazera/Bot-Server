@@ -51,6 +51,7 @@ function execute_install_sh() {
     try {
         execSync(`sudo bash "${script_path}" "${service_path}"`, { stdio: 'inherit' });
         console.log("\nInstallation Successfully. Application is set to run on port", port);
+        console.log(`API Docs available at http://localhost:${port}/doc`);
         fs.unlinkSync(script_path); 
     } catch (error) {
         console.error("\nFailed to run installation script, Make sure you have sudo access or the correct password.");
