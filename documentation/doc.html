@@ -9,6 +9,7 @@
 <body>
     <nav>
         <h1>API Documentation</h1>
+        <button id="theme-btn">Change Theme</button>
     </nav>
     <main>
         <div class="ctn-content">
@@ -165,3 +166,23 @@
     <footer></footer>
 </body>
 </html>
+
+<script>
+    const body = document.body;
+    const btn_theme = document.getElementById('theme-btn');
+    const stored_theme = localStorage.getItem('theme');
+
+    if (stored_theme === 'dark') {
+        body.classList.add('dark');
+    }
+
+    btn_theme.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        
+        if (body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    })
+</script>

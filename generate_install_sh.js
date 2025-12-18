@@ -6,8 +6,8 @@ const install_sh_content = `#!/bin/bash
 SERVICE_FILE_PATH="$1"
 APP_USER=$SUDO_USER
 COMMAND="/sbin/shutdown, /sbin/reboot, /usr/bin/systemctl restart nginx, /usr/bin/systemctl is-active nginx, /usr/bin/systemctl restart jellyfin, /usr/bin/systemctl is-active jellyfin"
-SERVICE_NAME="SysMan-server.service"
-SUDOERS_CONFIG="/etc/sudoers.d/SysMan-server-config"
+SERVICE_NAME="server-mobile-manage.service"
+SUDOERS_CONFIG="/etc/sudoers.d/server-mobile-manage-config"
 
 echo "SETUP SCRIPT"
 
@@ -31,16 +31,16 @@ if sudo systemctl is-enabled "$SERVICE_NAME" >/dev/null 2>&1; then
 fi
 
 echo "Configuration sudoers for user: \${APP_USER}..."
-echo "Defaults:\${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/SysMan-server-config > /dev/null
-echo "\${APP_USER} ALL=(ALL) NOPASSWD: \${COMMAND}" | sudo tee -a /etc/sudoers.d/SysMan-server-config > /dev/null
+echo "Defaults:\${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/server-mobile-manage-config > /dev/null
+echo "\${APP_USER} ALL=(ALL) NOPASSWD: \${COMMAND}" | sudo tee -a /etc/sudoers.d/server-mobile-manage-config > /dev/null
 
-echo "Copy file service to /etc/systemd/system/SysMan-server.service"
-sudo cp "$SERVICE_FILE_PATH" /etc/systemd/system/SysMan-server.service
+echo "Copy file service to /etc/systemd/system/server-mobile-manage.service"
+sudo cp "$SERVICE_FILE_PATH" /etc/systemd/system/server-mobile-manage.service
 
 echo "Start Service..."
 sudo systemctl daemon-reload
-sudo systemctl enable SysMan-server.service
-sudo systemctl start SysMan-server.service
+sudo systemctl enable server-mobile-manage.service
+sudo systemctl start server-mobile-manage.service
 echo "Setup Success, Service has been enabled"`;
 
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SERVICE_NAME="SysMan-server.service"
-SUDOERS_CONFIG="/etc/sudoers.d/SysMan-server-config"
+SERVICE_NAME="server-mobile-manage.service"
+SUDOERS_CONFIG="/etc/sudoers.d/server-mobile-manage-config"
 
 echo "UNINSTALL SCRIPT"
 echo "Stopping and disabling ${SERVICE_NAME}..."

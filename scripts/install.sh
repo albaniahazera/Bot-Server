@@ -6,14 +6,14 @@ COMMAND="/sbin/shutdown, /sbin/reboot, /usr/bin/systemctl restart nginx, /usr/bi
 
 echo "SETUP SCRIPT"
 echo "Configuration sudoers for user: ${APP_USER}..."
-echo "Defaults:${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/SysMan-server-config > /dev/null
-echo "${APP_USER} ALL=(ALL) NOPASSWD: ${COMMAND}" | sudo tee -a /etc/sudoers.d/SysMan-server-config > /dev/null
+echo "Defaults:${APP_USER} !requiretty" | sudo tee /etc/sudoers.d/server-mobile-manage-config > /dev/null
+echo "${APP_USER} ALL=(ALL) NOPASSWD: ${COMMAND}" | sudo tee -a /etc/sudoers.d/server-mobile-manage-config > /dev/null
 
-echo "Copy file service to /etc/systemd/system/SysMan-server.service"
-sudo cp "$SERVICE_FILE_PATH" /etc/systemd/system/SysMan-server.service
+echo "Copy file service to /etc/systemd/system/server-mobile-manage.service"
+sudo cp "$SERVICE_FILE_PATH" /etc/systemd/system/server-mobile-manage.service
 
 echo "Start Service..."
 sudo systemctl daemon-reload
-sudo systemctl enable SysMan-server.service
-sudo systemctl start SysMan-server.service
+sudo systemctl enable server-mobile-manage.service
+sudo systemctl start server-mobile-manage.service
 echo "Setup Success, Service has been enabled"

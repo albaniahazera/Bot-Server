@@ -7,13 +7,25 @@
 :root {
     --prim-color: rgb(46, 43, 43);
     --prim-backg: rgb(192, 192, 188);
-    --secn-backg: #bbb6b6;
+    --box-shadow: rgb(114, 208, 231);
+    --secn-backg: #797474;
     --secn-color: #969393;
+    --black-modc: rgb(255, 255, 255);
+    --black-modg: #000000;
+}
+
+body.dark {
+    color: var(--black-modc);
+    background: var(--black-modg);
+    transition: background 0.5s, color 0.5s;
+}
+
+body {
+    transition: background 0.5s, color 0.5s;
 }
 
 nav {
-    color: var(--prim-color);
-    box-shadow: 1px 2px 4px var(--prim-color);
+    box-shadow: 1px 2px 4px var(--box-shadow);
     padding: 2px;
 }
 
@@ -56,8 +68,8 @@ h3:after, h4:after {
 }
 
 .ctn-bu, .ctn-au, .ctn-rc, .ctn-r, .ctn-hn, .ctn-re{
-    font-size: large;
     margin: 2px 4px;
+    word-break: break-all;
 }
 
 span {
@@ -70,18 +82,12 @@ span {
     border: 1px solid var(--prim-color);
     padding: 8px;
     margin: 8px 0px;
-    width: 350px;
+    width: auto;
     overflow-y: auto;
     white-space: pre-wrap;
     font-family: monospace;
 }
 
-@media screen and(max-width: 600px) {
-    .ctn-bu, .ctn-au, .ctn-rc, .ctn-r, .ctn-hn, .ctn-re{
-        font-size: small;
-    }
-
-    .res-exam {
-        width: 150px;
-    }
+button {
+    cursor: pointer;
 }

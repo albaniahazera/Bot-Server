@@ -11,7 +11,7 @@ function uninstall() {
         execSync(`sudo bash "${script_path}"`, { stdio: 'inherit' });
         console.log("\nUninstallation Successfully. All configurations have been removed.");
 
-        const service_path = path.join(__dirname, 'bot-server.service');
+        const service_path = path.join(__dirname, 'server-mobile-manage.service');
 
         if (fs.existsSync(service_path)) {
             fs.unlinkSync(service_path);
