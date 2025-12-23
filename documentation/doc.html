@@ -28,12 +28,14 @@
             <div class="ctn-bu">
                 <ul>
                     <li>http://[ip]:[port]/</li>
-                    <li>http://[ip]:[port]/server/system</li>
-                    <li>http://[ip]:[port]/server/command</li>
+                    <li>http://[ip]:[port]/server/systems</li>
+                    <li>http://[ip]:[port]/server/commands</li>
+                    <li>http://[ip]:[port]/server/logs</li>
                 </ul>
                 <p><span>/</span> : Checks if the API is running (GET method).</p>
-                <p><span>/server/system</span> : Main route for retrieving system information (POST method). Append specific routes like /status, /os, <a href="#system">etc</a>.</p>
-                <p><span>/server/command</span> : Main route for executing server commands (POST method). Append specific commands like /shutdown, /restart, <a href="#command">etc</a>.</p>
+                <p><span>/server/systems</span> : Main route for retrieving system information (POST method). Append specific routes like /status, /os, <a href="#system">etc</a>.</p>
+                <p><span>/server/commands</span> : Main route for executing server commands (POST method). Append specific routes like /shutdown, /restart, <a href="#command">etc</a>.</p>
+                <p><span>/server/logs</span> : Main route for executing server logs (POST method). Append specific routes like /nginx/check-log-file, /nginx/read-log-file, <a href="#log">etc</a>.</p>
             </div>
         </div>
         <div id="api-auth">
@@ -72,14 +74,16 @@
                         <li>/status-jellyfin</li>
                         <li>/restart-nginx</li>
                         <li>/status-nginx</li>
+                        <li>/status-cloudflared</li>
                     </ul>
                     <p>All these routes use the POST method, require the value to be set to True in service.conf, and require correct sudoers and service file configuration.</p>
-                    <p><span>/shutdown</span> : Immediately requests server shutdown.</p>
+                    <p><span>/shutdown</span> : Immediately requests server shutdown</p>
                     <p><span>/restart</span> : Immediately request server restart</p>
                     <p><span>/restart-jellyfin</span> : Request Restart jellyfin service instanly</p>
-                    <p><span>/status-jellyfin</span> : Checks the status of the Jellyfin service (active or inactive).</p>
+                    <p><span>/status-jellyfin</span> : Checks the status of the Jellyfin service</p>
                     <p><span>/restart-nginx</span> : Request Restart nginx service instanly</p>
-                    <p><span>/status-nginx</span> : Checks the status of the Nginx service (active or inactive).</p>
+                    <p><span>/status-nginx</span> : Checks the status of the Nginx service</p>
+                    <p><span>/status-cloudflared</span> : Checks the status of the Cloudflared service</p>
                 </div>
                 <div id="system">
                     <h4>Routes System</h4>
@@ -99,6 +103,16 @@
                     <p><span>/os</span> : Request detailed os like platform, distro, and other</p>
                     <p><span>/network</span> : Request data network like interface name, speed transfer, and other</p>
                 </div>
+                <div id="log">
+                    <h4>Routes Log</h4>
+                    <ul>
+                        <li>/nginx/check-log-file</li>
+                        <li>/nginx/read-log-file</li>
+                    </ul>
+                    <p>All this routes has method POST and need set the value to True in service.conf</p>
+                    <p><span>/nginx/check-log-file</span> : Request list nginx log file </p>
+                    <p><span>/nginx/read-log-file</span> : Request read nginx log file</p>
+                </div>
             </div>
         </div>
         <div id="data-note">
@@ -106,7 +120,7 @@
             <div class="ctn-hn">
                 <div class="si-lib">
                     <h4>Get Data</h4>
-                    <p>This API uses the <span>systeminformation library and execSync (child_process)</span> for retrieving system data.</p>
+                    <p>This API uses the <span>systeminformation, util, and spawn execSync exec (child_process)</span> for retrieving system data.</p>
                     <p>Disk and RAM data have been converted to Gigabytes (GB). for data transfer using Mega Byte (MB)</p>
                 </div>
                 <div class="note">
@@ -118,7 +132,7 @@
         <div id="res-examp">
             <h3>Example Responses</h3>
             <div class="ctn-re">
-                <p>http://10.159.209.150:3000/server/system/status</p>
+                <p>http://[ip]:[port]/server/systems/status</p>
                 <div class="res-exam">{
   "cpu_load": "0.02",
   "os_distro": "Ubuntu",
@@ -137,27 +151,26 @@
   ]
 }
                 </div>
-                <p>http://10.159.209.150:3000/server/command/status-nginx</p>
-                <div class="res-exam">{
-  "nginx_status": "active"
+                <p>http://[ip]:[port]/server/commands/status-nginx</p>
+                <pre class="res-exam">{
+  "success": true,
+  "message": "Service status retrieved successfully.",
+  "details": "● nginx.service - A high performance web server and a reverse proxy server     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)\n     Active: active (running) since Tue 2025-12-23 04:37:12 UTC; 9h ago\n       Docs: man:nginx(8)\n    Process: 1025 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)\n    Process: 1036 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)\n   Main PID: 1038 (nginx)\n      Tasks: 5 (limit: 9345)\n     Memory: 5.2M (peak: 5.5M)\n        CPU: 35ms\n     CGroup: /system.slice/nginx.service\n             ├─1038 \"nginx: master process /usr/sbin/nginx -g daemon on; master_process on;\"\n             ├─1039 \"nginx: worker process\"\n             ├─1040 \"nginx: worker process\"\n             ├─1041 \"nginx: worker process\"\n             └─1042 \"nginx: worker process\"\n\nDec 23 04:37:11 ubuntu-server systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...\nDec 23 04:37:12 ubuntu-server systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.\n",
+  "service_name": "nginx"
 }
-                </div>
-                <p>http://10.159.209.150:3000/server/system/os</p>
+                </pre>
+                <p>http://[ip]:[port]/server/logs/nginx/check-log-file</p>
                 <div class="res-exam">{
-  "platform": "linux",
-  "distro": "Ubuntu",
-  "release": "24.04.3 LTS",
-  "kernel": "6.8.0-88-generic",
-  "arch": "x64",
-  "build": "",
-  "code_name": "noble",
-  "code_page": "UTF-8",
-  "fqdn": "ubuntu-server",
-  "host_name": "ubuntu-server",
-  "logo_file": "ubuntu",
-  "serial": "bf74dd623c564cf0ae08949b6c47bada",
-  "service_pack": "",
-  "uefi": false
+  "status": "success",
+  "files": [
+    "access.log.1",
+    "error.log.1",
+    "astro_access.log",
+    "astro_error.log",
+    "astro_access.log.1",
+    "error.log",
+    "access.log"
+  ]
 }
                 </div>
             </div>
