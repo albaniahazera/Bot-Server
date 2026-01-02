@@ -16,7 +16,7 @@ if (USER === "root") {
 }
 
 const service_file = `[Unit]
-Description=SysMan Server Service for controlling server with http
+Description=Server Service for controlling server with http
 After=network.target
 
 [Service]

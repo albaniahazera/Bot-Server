@@ -75,6 +75,7 @@
                         <li>/restart-nginx</li>
                         <li>/status-nginx</li>
                         <li>/status-cloudflared</li>
+                        <li>/status-postgresql</li>
                     </ul>
                     <p>All these routes use the POST method, require the value to be set to True in service.conf, and require correct sudoers and service file configuration.</p>
                     <p><span>/shutdown</span> : Immediately requests server shutdown</p>
@@ -84,6 +85,7 @@
                     <p><span>/restart-nginx</span> : Request Restart nginx service instanly</p>
                     <p><span>/status-nginx</span> : Checks the status of the Nginx service</p>
                     <p><span>/status-cloudflared</span> : Checks the status of the Cloudflared service</p>
+                    <p><span>/status-postgresql</span> : Checks the status of the postgresql service</p>
                 </div>
                 <div id="system">
                     <h4>Routes System</h4>

@@ -208,7 +208,7 @@ exports.check_log_file = (async (req, res) => {
     }catch (err) {
         res.status(500).json({ status: 'error', message: 'Failed list log', error: err.message });
     }
-})
+});
 
 exports.read_log_file = (async (req, res) => {
     const { fileName } = req.body;
@@ -226,4 +226,47 @@ exports.read_log_file = (async (req, res) => {
     }catch (err) {
         res.status(500).json({ status: 'error', message: 'Failed reading file' });
     }
-})
+});
+
+exports.status_postgresql = (async (req, res) => {
+    const command = 'systemctl';
+    const args = ['status', 'postgresql'];
+    let output = "";
+    let err_output = "";
+    let response_sent = false; 
+
+    const send_response = (status_code, success, message, details) => {
+        if (response_sent) {
+            console.warn('Attempted to send response twice, blocked.');
+            return;
+        }
+        response_sent = true;
+        res.status(status_code).json({
+            success: success,
+            message: message,
+            details: details,
+            service_name: 'postgresql'
+        });
+    };
+
+    const status_process = spawn(command, args);
+
+    status_process.stdout.on('data', (data) => {
+        output += data.toString();
+    });
+    status_process.stderr.on('data', (data) => {
+        err_output += data.toString();
+    });
+    status_process.on('error', (err) => {
+        send_response(500, false, 'Failed to execute system command (e.g., systemctl not found).', err.message);
+    });
+    status_process.on('close', (code) => {
+        if (response_sent) return;
+
+        if (code !== 0) {
+            send_response(500, false, `Command failed or service inactive (Exit Code: ${code})`, err_output || output);
+        } else {
+            send_response(200, true, 'Service status retrieved successfully.', output);
+        }
+    });
+});
